@@ -1,19 +1,24 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/devarena
-    username: postgres
-    password: postgrade
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
   data:
     redis:
-      host: localhost
-      port: 6379
+      url: ${REDIS_URL}
+
 server:
-  port: 8080
+  port: ${PORT:8080}
+
 jwt:
-  secret: devarenaSecretKey12345678901234567890
+  secret: ${JWT_SECRET}
+
 admin:
-  secret-key: devArena@Admin#2026
+  secret-key: ${ADMIN_SECRET_KEY}

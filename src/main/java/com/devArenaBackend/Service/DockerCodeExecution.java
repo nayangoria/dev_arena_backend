@@ -11,6 +11,8 @@ import com.github.dockerjava.api.model.HostConfig;
 import com.github.dockerjava.core.DefaultDockerClientConfig;
 import com.github.dockerjava.core.DockerClientImpl;
 import com.github.dockerjava.httpclient5.ApacheDockerHttpClient;
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -24,12 +26,14 @@ import java.util.UUID;
 public class DockerCodeExecution {
 
     // Connect to Docker running on your machine
-    private final DockerClient dockerClient;
-
-    public DockerCodeExecution() {
+    @Value("${docker.host:tcp://localhost:2375}")
+    private String dockerHost;
+    private  DockerClient dockerClient;
+    @PostConstruct
+    public void init() {
         var config = DefaultDockerClientConfig
                 .createDefaultConfigBuilder()
-                .withDockerHost("tcp://localhost:2375")
+                .withDockerHost(dockerHost)
                 .build();
 
         var httpClient = new ApacheDockerHttpClient.Builder()
