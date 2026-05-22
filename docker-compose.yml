@@ -1,0 +1,43 @@
+version: '3.9'
+
+services:
+
+  # Container 1 — PostgreSQL database
+  db:
+    image: postgres:16-alpine
+    container_name: devArena_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: devarena
+    ports:
+      - "5433:5432"
+    networks:
+      - devArena_network
+redis:
+    image: redis:7-alpine
+    container_name: devArena_redis
+    ports:
+      - "6379:6379"
+    networks:
+      - devArena_network
+
+  # Container 2 — Spring Boot backend
+  backend:
+    build:
+      context: .
+    container_name: devArena_backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/devarena
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    networks:
+      - devArena_network
+
+networks:
+  devArena_network:
+    driver: bridge

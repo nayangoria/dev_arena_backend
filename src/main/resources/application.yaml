@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/devarena
+    username: postgres
+    password: postgrade
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  data:
+    redis:
+      host: localhost
+      port: 6379
+server:
+  port: 8080
+jwt:
+  secret: devarenaSecretKey12345678901234567890
+admin:
+  secret-key: devArena@Admin#2026
