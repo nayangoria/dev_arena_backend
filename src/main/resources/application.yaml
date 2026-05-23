@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: ${DATABASE_URL}
-    username: ${DATABASE_USERNAME}
-    password: ${DATABASE_PASSWORD}
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/devarena}
+    username: ${DATABASE_USERNAME:postgres}
+    password: ${DATABASE_PASSWORD:postgrade}
   jpa:
     hibernate:
       ddl-auto: update
@@ -12,13 +12,13 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
   data:
     redis:
-      url: ${REDIS_URL}
+      url: ${REDIS_URL:redis://localhost:6379}
 
 server:
   port: ${PORT:8080}
 
 jwt:
-  secret: ${JWT_SECRET}
+  secret: ${JWT_SECRET:f1statsexplorersecretkey12345678901234567890}
 
 admin:
-  secret-key: ${ADMIN_SECRET_KEY}
+  secret-key: ${ADMIN_SECRET_KEY:devArena@Admin#2026}

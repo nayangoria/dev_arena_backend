@@ -6,42 +6,38 @@ import com.devArenaBackend.DTO.SubmissionResponse;
 import com.devArenaBackend.Repository.ProblemRepository;
 import com.devArenaBackend.Repository.RoomRepository;
 import com.devArenaBackend.Repository.UserRepository;
-import com.devArenaBackend.Service.DockerCodeExecution;
+import com.devArenaBackend.Service.CodeExecutionService;
 import com.devArenaBackend.Service.EloServices;
 import com.devArenaBackend.entity.Room;
 import com.devArenaBackend.entity.Status;
-import com.devArenaBackend.entity.User;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
-import java.util.Optional;
-
 @Controller
 
 public class BattleController {
 
     private final SimpMessagingTemplate messagingTemplate;
-    private final DockerCodeExecution dockerExecutionService;
+    private final CodeExecutionService codeExecutionService;
     private final RoomRepository roomRepository;
     private final EloServices eloServices;
     private final UserRepository userRepository;
     private final ProblemRepository problemRepository;
-
     public BattleController(SimpMessagingTemplate messagingTemplate,
-                            DockerCodeExecution dockerExecutionService,
+                            CodeExecutionService codeExecutionService,
                             RoomRepository roomRepository,
-                            EloServices eloServices,
-                            UserRepository userRepository,
-                            ProblemRepository problemRepository) {
+                            EloServices eloService,
+                            ProblemRepository problemRepository,
+                            UserRepository userRepository) {
         this.messagingTemplate = messagingTemplate;
-        this.dockerExecutionService = dockerExecutionService;
+        this.codeExecutionService = codeExecutionService;
         this.roomRepository = roomRepository;
-        this.eloServices = eloServices;
-        this.userRepository = userRepository;
+        this.eloServices = eloService;
         this.problemRepository = problemRepository;
+        this.userRepository = userRepository;
     }
 
     @MessageMapping("/battle/{roomCode}/submit")
@@ -62,7 +58,7 @@ public class BattleController {
         }
 
         // Run code against test cases
-        SubmissionResponse result = dockerExecutionService
+        SubmissionResponse result = codeExecutionService
                 .executeWithTestCases(submission, testCasesJson);
 
         // Build result message
