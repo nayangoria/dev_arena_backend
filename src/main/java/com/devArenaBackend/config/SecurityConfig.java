@@ -37,6 +37,7 @@ public class SecurityConfig {
                         // Public endpoints — no login needed
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/ws/**").permitAll()
+                        .requestMatchers("/api/submission/**").authenticated()
                         // Admin only endpoints
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         // Everything else needs login
