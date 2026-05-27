@@ -120,7 +120,12 @@ public class CodeExecutionService {
             if (statusId == 3) {
                 // Success
                 response.setSuccess(true);
-                response.setOutput(result.path("stdout").asText(""));
+                String stdout = result.path("stdout").asText("");
+                String stderr = result.path("stderr").asText("");
+                System.out.println("Judge0 stdout: " + stdout);
+                System.out.println("Judge0 stderr: " + stderr);
+                System.out.println("Judge0 full response: " + result.toString());
+                response.setOutput(stdout);
                 response.setError("");
             } else if (statusId == 6) {
                 // Compilation error
